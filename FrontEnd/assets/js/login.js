@@ -1,4 +1,5 @@
 const loginForm = document.getElementById('loginForm');
+const errorMessage = document.getElementById('errorMessage');
 
 loginForm.addEventListener('submit', function(event) {
   event.preventDefault();
@@ -17,15 +18,19 @@ loginForm.addEventListener('submit', function(event) {
   })
     .then(response => response.json())
     .then(data => {
-      const { userId, token } = data;
+      if (data.userId && data.token) {
+        const { userId, token } = data;
 
-      //Stockage dans le local storage
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('token', token);
+        // Stockage dans le local storage
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('token', token);
 
-      console.log('Connexion arabe réussie, rive sud !')
+        window.location.href = '../index.html';
+      } else {
+        errorMessage.textContent = "Erreur dans l'identifiant ou le mot de passe";
+      }
     })
     .catch(error => {
-        console.log('Erreur de connexion hydroponique', error);
+      console.log('Erreur de connexion', error);
     });
 });
