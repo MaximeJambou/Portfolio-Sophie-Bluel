@@ -25,7 +25,7 @@ loginForm.addEventListener('submit', function(event) {
         localStorage.setItem('userId', userId);
         localStorage.setItem('token', token);
 
-        window.location.href = '../index.html';
+        window.location.href = './index.html';
       } else {
         errorMessage.textContent = "Erreur dans l'identifiant ou le mot de passe";
       }

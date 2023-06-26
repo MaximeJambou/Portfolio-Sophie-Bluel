@@ -72,12 +72,12 @@
     generateWorks(works);
     generateCategories(works);
 
-    
-
-   
-
-
   } catch (error) {
     console.error('Erreur lors de la récupération des travaux:', error);
   }
 })();
+
+
+
+
+
