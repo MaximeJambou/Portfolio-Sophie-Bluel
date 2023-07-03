@@ -1,8 +1,9 @@
 // Récupération des travaux et crétaions des filtres depuis l'API Works
+let works = [];
 (async () => {
   try {
     const response = await fetch('http://localhost:5678/api/works');
-    const works = await response.json();
+    works = await response.json();
 
     const categories = [];
 
@@ -76,8 +77,3 @@
     console.error('Erreur lors de la récupération des travaux:', error);
   }
 })();
-
-
-
-
-
