@@ -70,8 +70,13 @@ let works = [];
       }
     }
 
-    generateWorks(works);
-    generateCategories(works);
+    if (modalClose) {
+      generateWorks(works);
+      generateCategories(works);
+    }
+    
+
+    console.log('importation réussie');
 
   } catch (error) {
     console.error('Erreur lors de la récupération des travaux:', error);

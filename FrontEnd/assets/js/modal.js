@@ -1,6 +1,8 @@
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 
+let modalClose = true;
+
 if (userId && token) {
 
     // Ajouter le padding-top de 59px au header
@@ -62,8 +64,12 @@ if (userId && token) {
     // Déclencher l'ouverture de la modale
     const editButton = document.querySelector('.edit-button');
 
-    editButton.addEventListener('click', function() {
+    editButton.addEventListener('click', function(event) {
+        event.stopPropagation();
         
+        // Indiquer que la modale est ouverte
+        modalClose = false;
+
         // Création de la modale
         const modal = document.createElement('div');
         modal.classList.add('modal');
@@ -163,7 +169,10 @@ if (userId && token) {
         }
 
         // Appeler la fonction pour remplir la modal-gallery
-        generateWorksInModal();
+        if (!modalClose) {
+            generateWorksInModal();
+            attachDeleteEvent();
+        }
 
 
         // Création de la deuxième page de la modale
@@ -321,8 +330,6 @@ if (userId && token) {
 
         // Supprimer un projet
 
-        // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4';
-
         // Fonction pour suppriumer le projet
         async function deleteWork(workId, token) {
             try {
@@ -348,22 +355,30 @@ if (userId && token) {
             }
         }
 
-        // Appel de la fonction de suppression du projet
-        const iconDeleteElements = document.querySelectorAll('.icon-delete');
+        // Fonction pour attacher l'événement de suppression aux icônes de suppression
+        function attachDeleteEvent() {
+            const iconDeleteElements = document.querySelectorAll('.icon-delete');
 
-        // Parcourir les éléments et attacher l'événement de clic à chacun d'eux
-        iconDeleteElements.forEach((iconDeleteElement) => {
-            iconDeleteElement.addEventListener('click',async function(event) {
-                const workId = this.parentElement.getAttribute('data-workid');
-                deleteWork(workId, token);
-
-                // Mettre à jour la variable works après la suppression
-                const response = await fetch('http://localhost:5678/api/works');
-                works = await response.json();
-
-                generateWorksInModal();
+            iconDeleteElements.forEach((iconDeleteElement) => {
+                iconDeleteElement.removeEventListener('click', deleteEvent); // Supprime l'ancien gestionnaire d'événement s'il existe
+                iconDeleteElement.addEventListener('click', deleteEvent);
             });
-        }); 
+        }
+
+        // Fonction pour gérer l'événement de suppression
+        async function deleteEvent(event) {
+            event.stopPropagation();
+            const workId = this.parentElement.getAttribute('data-workid');
+            await deleteWork(workId, token);
+
+            // Vérifier si la modale est encore ouverte
+        if (!modalClose) {
+            // Supprimer le projet de la galerie dans la modale
+            const workElement = this.parentElement;
+            workElement.remove();
+        }
+        }
+
 
 
 
