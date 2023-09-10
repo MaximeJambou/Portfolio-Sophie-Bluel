@@ -1,11 +1,12 @@
 // Récupération des travaux et crétaions des filtres depuis l'API Works
 let works = [];
+let categories = [];
+
 (async () => {
   try {
     const response = await fetch('http://localhost:5678/api/works');
     works = await response.json();
 
-    const categories = [];
 
     function generateWorks(works) {
       // Récupération de l'élément du DOM qui accueillera la gallerie
@@ -51,14 +52,14 @@ let works = [];
 
       for (let i = 0; i < works.length; i++) {
         const work = works[i];
-        const category = work.category.name;
+        const category = work.category;
 
-        if (!categories.includes(category)) {
+        if (!categories.map(c => c.id).includes(category.id)) {
           const categoryButton = document.createElement("div");
           categoryButton.classList.add("category");
-          categoryButton.innerText = category;
+          categoryButton.innerText = category.name;
           categoryButton.addEventListener("click", () => {
-            const filteredWorks = works.filter((work) => work.category.name === category);
+            const filteredWorks = works.filter((work) => work.category.name === category.name);
             generateWorks(filteredWorks);
             document.querySelector('.button-actived').classList.remove("button-actived");
             categoryButton.classList.add("button-actived");
@@ -70,10 +71,10 @@ let works = [];
       }
     }
 
-    if (modalClose) {
-      generateWorks(works);
-      generateCategories(works);
-    }
+    
+    generateWorks(works);
+    generateCategories(works);
+    
     
 
     console.log('importation réussie');
@@ -82,3 +83,4 @@ let works = [];
     console.error('Erreur lors de la récupération des travaux:', error);
   }
 })();
+

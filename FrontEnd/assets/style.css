@@ -480,7 +480,11 @@ footer nav ul {
 	font-weight: 100;
 }
 
-.add-picture button{
+.add-picture .add-picture--label{
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 40%;
 	height: 36px;
 	font-family: 'Work Sans';
@@ -489,6 +493,12 @@ footer nav ul {
 	color: #306685;
 	border-radius: 50px;
 	border: none;
+}
+
+.image-preview{
+	height: 100%;
+	width: 40%;
+	object-fit: cover;
 }
 
 .modal-form label{
@@ -527,6 +537,10 @@ footer nav ul {
 	color: white;
 	border: none;
 	border-radius: 60px;
+}
+
+.add-project--validation.completed-form{
+	background-color: #1D6154;
 }
 
 .hidden{
