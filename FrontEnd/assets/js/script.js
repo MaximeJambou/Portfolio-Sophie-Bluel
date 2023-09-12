@@ -2,20 +2,15 @@
 let works = [];
 let categories = [];
 
-(async () => {
-  try {
-    const response = await fetch('http://localhost:5678/api/works');
-    works = await response.json();
+// Fonction pour générer les travaux
+function generateWorks(works) {
+    // Récupération de l'élément du DOM qui accueillera la gallerie
+    const sectionGallery = document.querySelector(".gallery");
 
+    // Réinitialiser la galerie avant l'importation
+    sectionGallery.innerHTML = "";
 
-    function generateWorks(works) {
-      // Récupération de l'élément du DOM qui accueillera la gallerie
-      const sectionGallery = document.querySelector(".gallery");
-
-      // Réinitialiser la galerie avant l'importation
-      sectionGallery.innerHTML = "";
-
-      for (let i = 0; i < works.length; i++) {
+    for (let i = 0; i < works.length; i++) {
         const work = works[i];
 
         // Créer les éléments HTML pour chaque projet
@@ -30,57 +25,60 @@ let categories = [];
         figureWork.appendChild(imageWork);
         figureWork.appendChild(nameWork);
         sectionGallery.appendChild(figureWork);
-      }
     }
+}
 
-    function generateCategories(works) {
-      const sectionCategories = document.querySelector(".categories");
+// Fonction pour générer les catégories
+function generateCategories(works) {
+    const sectionCategories = document.querySelector(".categories");
 
-      // Réinitialiser les catégories
-      sectionCategories.innerHTML = "";
+    // Réinitialiser les catégories
+    sectionCategories.innerHTML = "";
 
-      const allButton = document.createElement("div");
-      allButton.classList.add("category","button-actived"); 
-      allButton.innerText = "Tous";
-      allButton.addEventListener("click", () => {
+    const allButton = document.createElement("div");
+    allButton.classList.add("category", "button-actived");
+    allButton.innerText = "Tous";
+    allButton.addEventListener("click", () => {
         generateWorks(works);
         document.querySelector('.button-actived').classList.remove("button-actived");
         allButton.classList.add("button-actived");
-      });
+    });
 
-      sectionCategories.appendChild(allButton);
+    sectionCategories.appendChild(allButton);
 
-      for (let i = 0; i < works.length; i++) {
+    for (let i = 0; i < works.length; i++) {
         const work = works[i];
         const category = work.category;
 
         if (!categories.map(c => c.id).includes(category.id)) {
-          const categoryButton = document.createElement("div");
-          categoryButton.classList.add("category");
-          categoryButton.innerText = category.name;
-          categoryButton.addEventListener("click", () => {
-            const filteredWorks = works.filter((work) => work.category.name === category.name);
-            generateWorks(filteredWorks);
-            document.querySelector('.button-actived').classList.remove("button-actived");
-            categoryButton.classList.add("button-actived");
-          });
+            const categoryButton = document.createElement("div");
+            categoryButton.classList.add("category");
+            categoryButton.innerText = category.name;
+            categoryButton.addEventListener("click", () => {
+                const filteredWorks = works.filter((work) => work.category.name === category.name);
+                generateWorks(filteredWorks);
+                document.querySelector('.button-actived').classList.remove("button-actived");
+                categoryButton.classList.add("button-actived");
+            });
 
-          sectionCategories.appendChild(categoryButton);
-          categories.push(category);
+            sectionCategories.appendChild(categoryButton);
+            categories.push(category);
         }
-      }
     }
+}
 
-    
-    generateWorks(works);
-    generateCategories(works);
-    
-    
+// Récupération des travaux depuis l'API
+(async () => {
+    try {
+        const response = await fetch('http://localhost:5678/api/works');
+        works = await response.json();
 
-    console.log('importation réussie');
+        generateWorks(works);
+        generateCategories(works);
 
-  } catch (error) {
-    console.error('Erreur lors de la récupération des travaux:', error);
-  }
+        console.log('importation réussie');
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération des travaux:', error);
+    }
 })();
-

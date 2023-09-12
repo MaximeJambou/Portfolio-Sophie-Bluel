@@ -1,3 +1,4 @@
+// localStorage
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 
@@ -311,7 +312,6 @@ if (userId && token) {
             button.addEventListener('click', function() {
                 // Supprimer la modale du DOM
                 modal.remove();
-                window.location.reload();
             });
         });
 
@@ -320,7 +320,6 @@ if (userId && token) {
             if (event.target === modal) {
             // Supprimer la modale du DOM
             modal.remove();
-            window.location.reload();
             }
         });
 
@@ -329,7 +328,6 @@ if (userId && token) {
             if (event.key === 'Escape') {
             // Supprimer la modale du DOM
             modal.remove();
-            window.location.reload();
             }
         });
 
@@ -384,6 +382,8 @@ if (userId && token) {
              // Supprimer le projet de la galerie dans la modale
             const workElement = this.parentElement;
             workElement.remove();
+            generateWorks();
+            generateCategories();
             }else{
             localStorage.removeItem('userId');
             localStorage.removeItem('token');
@@ -391,6 +391,8 @@ if (userId && token) {
             window.location.href ='login.html';
             }            
         }
+
+
 
 
        // Gestionnaire d'événement pour le bouton "+ Ajouter photo"
@@ -479,8 +481,10 @@ if (userId && token) {
                     if (response.status === 201) {
                     console.log('Le projet a été ajouté avec succès.');
                     
-                    // Actualiser la modale
+                    // Actualiser la modale et la page
                     generateWorksInModal();
+                    generateWorks();
+                    generateCategories();
                     showFirstPage();
                     
                     } else if (response.status === 401) {
