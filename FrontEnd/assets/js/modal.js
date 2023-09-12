@@ -158,7 +158,6 @@ if (userId && token) {
         }
 
         // Appeler la fonction pour remplir la modal-gallery
-        
         generateWorksInModal();
         attachDeleteEvent();
         
@@ -382,8 +381,13 @@ if (userId && token) {
              // Supprimer le projet de la galerie dans la modale
             const workElement = this.parentElement;
             workElement.remove();
-            generateWorks();
-            generateCategories();
+
+            // Après avoir supprimé le projet, faire un appel à l'API pour obtenir la liste mise à jour des projets
+            const response = await fetch('http://localhost:5678/api/works');
+            works = await response.json();
+            
+            generateWorks(works);
+            generateCategories(works);
             }else{
             localStorage.removeItem('userId');
             localStorage.removeItem('token');
@@ -451,6 +455,7 @@ if (userId && token) {
         categorySelect.addEventListener('input', checkFormCompletion);
         addPicture.addEventListener('input', checkFormCompletion);
 
+
         // Gestionnaire d'événement pour le bouton "Valider"
         validateButton.addEventListener('click', function(event) {
             event.preventDefault();
@@ -481,11 +486,8 @@ if (userId && token) {
                     if (response.status === 201) {
                     console.log('Le projet a été ajouté avec succès.');
                     
-                    // Actualiser la modale et la page
-                    generateWorksInModal();
-                    generateWorks();
-                    generateCategories();
-                    showFirstPage();
+                    // Après avoir ajouté le projet, refaites un appel à l'API pour obtenir la liste mise à jour des projets
+                    return fetch('http://localhost:5678/api/works');
                     
                     } else if (response.status === 401) {
                     console.error('Non autorisé à ajouter le projet.');
@@ -493,6 +495,19 @@ if (userId && token) {
                     console.error('Une erreur s\'est produite lors de l\'ajout du projet.');
                     }
                 })
+
+                .then(response => response.json())
+                .then(updatedWorks => {
+                    works = updatedWorks;
+
+                    // Mettez à jour l'interface utilisateur avec les nouvelles données
+                    generateWorksInModal(works);
+                    generateWorks(works);
+                    generateCategories(works);
+                    attachDeleteEvent();
+                    showFirstPage();
+                })
+
                 .catch(error => {
                     console.error('Une erreur s\'est produite lors de la communication avec l\'API.', error);
                 });
