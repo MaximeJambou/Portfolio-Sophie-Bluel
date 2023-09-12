@@ -19,12 +19,10 @@ if (userId && token) {
     const editText = document.createElement('p');
     editText.textContent = 'Mode édition';
     
-    const publishButton = document.createElement('button');
-    publishButton.textContent = 'Publier les changements';
     
     editModeBanner.appendChild(editIcon);
     editModeBanner.appendChild(editText);
-    editModeBanner.appendChild(publishButton);
+    
     
     document.body.appendChild(editModeBanner);
 
@@ -101,13 +99,10 @@ if (userId && token) {
         addButton.classList.add('modal-button--addProject');
         addButton.textContent = 'Ajouter une photo';
 
-        const deleteButton = document.createElement('p');
-        deleteButton.classList.add('delete-button');
-        deleteButton.textContent = 'Supprimer la galerie';
+        
 
         // Ajouter les éléments au DOM
         modalFooter.appendChild(addButton);
-        modalFooter.appendChild(deleteButton);
         modalContainer.appendChild(modalTitle);
         modalContainer.appendChild(modalGallery);
         modalContainer.appendChild(modalBorder);
@@ -124,6 +119,9 @@ if (userId && token) {
 
             // Récupération de l'élément du DOM qui accueillera la modal-gallery
             const modalGallery = document.querySelector('.modal-gallery');
+
+            // Réinitialiser la galerie avant l'importation
+            modalGallery.innerHTML = "";
 
             // Parcourir les travaux et créer les éléments HTML pour chaque projet
             for (let i = 0; i < works.length; i++) {
@@ -148,13 +146,7 @@ if (userId && token) {
                 iconDelete.classList.add('icon-delete');
                 iconDelete.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
         
-                // Ajout de l'icône de direction seulement pour le premier élément
-                if (i === 0) {
-                const arrowDirection = document.createElement('span');
-                arrowDirection.classList.add('arrow-direction');
-                arrowDirection.innerHTML = '<i class="fa-solid fa-up-down-left-right"></i>';
-                figureWork.appendChild(arrowDirection);
-                }
+                
         
                 // Ajout des éléments au DOM
                 figureWork.appendChild(imageWork);
@@ -484,12 +476,13 @@ if (userId && token) {
                     body: formData
                 })
                 .then(response => {
-                    if (response.status === 200) {
+                    if (response.status === 201) {
                     console.log('Le projet a été ajouté avec succès.');
                     
                     // Actualiser la modale
                     generateWorksInModal();
                     showFirstPage();
+                    
                     } else if (response.status === 401) {
                     console.error('Non autorisé à ajouter le projet.');
                     } else {

@@ -304,14 +304,6 @@ footer nav ul {
 	color: white;
 }
 
-.edit-mode button {
-	padding: 11.5px 20px;
-	border-radius: 60px;
-	background-color: white;
-	font-family: 'Work sans';
-	font-weight: 500;
-	border: none;
-}
 
 /* Bouton modifier */
 .gallery-title--edit{
@@ -419,20 +411,6 @@ footer nav ul {
 	border-radius: 2px;
 }
 
-.arrow-direction{
-	position: absolute;
-	top: 5px;
-	right: 25px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 17px;
-	width: 17px;
-	font-size: 10px;
-	color: white;
-	background-color: black;
-	border-radius: 2px;
-}
 
 .modal-footer{
 	display: flex;
@@ -451,10 +429,7 @@ footer nav ul {
 	border-radius: 60px;
 }
 
-.delete-button{
-	font-size: 16px;
-	color: red;
-}
+
 
 
 /* Modale du formulaire */
