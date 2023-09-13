@@ -20,10 +20,8 @@ if (userId && token) {
     const editText = document.createElement('p');
     editText.textContent = 'Mode édition';
     
-    
     editModeBanner.appendChild(editIcon);
     editModeBanner.appendChild(editText);
-    
     
     document.body.appendChild(editModeBanner);
 
@@ -56,6 +54,7 @@ if (userId && token) {
     spanElement.appendChild(textNode);
 
     galleryTitle.appendChild(spanElement);
+
 
 
 
@@ -101,7 +100,6 @@ if (userId && token) {
         addButton.textContent = 'Ajouter une photo';
 
         
-
         // Ajouter les éléments au DOM
         modalFooter.appendChild(addButton);
         modalContainer.appendChild(modalTitle);
@@ -128,7 +126,7 @@ if (userId && token) {
             for (let i = 0; i < works.length; i++) {
                 const work = works[i];
         
-                // Création de la figure pour le projet et attibution d'un ID
+                // Création de la figure pour le projet et attribution d'un ID
                 const figureWork = document.createElement('figure');
                 figureWork.id = `work-${work.id}`;
                 figureWork.setAttribute('data-workid', work.id);
@@ -273,6 +271,7 @@ if (userId && token) {
         // Ajout de la deuxième page de modale au DOM
         modal.appendChild(modalContent2);
 
+        //Afficher la première page à l'ouverture
         showFirstPage();
 
 
@@ -280,6 +279,7 @@ if (userId && token) {
         // Gestion des évènements
 
         // Passage d'une page de modale à l'autre
+
         // Fonction pour afficher la première page de la modale
         function showFirstPage() {
             modalContent1.classList.remove('hidden');
@@ -304,6 +304,7 @@ if (userId && token) {
 
 
         // Gestion de la fermeture de la modale
+
         // Fermeture de la modale en cliquant sur la croix
         const closeButtons = document.querySelectorAll('.close-button');
 
@@ -333,7 +334,7 @@ if (userId && token) {
 
         // Supprimer un projet
 
-        // Fonction pour suppriumer le projet
+        // Fonction pour supprimer le projet
         async function deleteWork(workId, token) {
             try {
                 const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
@@ -387,6 +388,8 @@ if (userId && token) {
             works = await response.json();
             
             generateWorks(works);
+            console.log(works);
+            console.log(categories);
             generateCategories(works);
             }else{
             localStorage.removeItem('userId');
@@ -397,9 +400,9 @@ if (userId && token) {
         }
 
 
+        // Ajouter un projet
 
-
-       // Gestionnaire d'événement pour le bouton "+ Ajouter photo"
+        // Gestionnaire d'événement pour le bouton "+ Ajouter photo"
         addPictureLabel.addEventListener('click', function(event) {
             event.stopPropagation();
             event.preventDefault();
@@ -506,6 +509,7 @@ if (userId && token) {
                     generateCategories(works);
                     attachDeleteEvent();
                     showFirstPage();
+                    resetModalForm();
                 })
 
                 .catch(error => {
@@ -517,9 +521,30 @@ if (userId && token) {
         });
 
 
+        function resetModalForm() {
+            // Réinitialiser les champs du formulaire
+            titleInput.value = '';
+            categorySelect.selectedIndex = 0; // Sélectionnez la première option par défaut
+        
+            // Supprimer l'image prévisualisée
+            const imagePreview = addPicture.querySelector('.image-preview');
+            if (imagePreview) {
+                imagePreview.remove();
+            }
+        
+            // Remettre le contenu original de la zone "add-picture"
+            addPicture.innerHTML = '';
+            addPicture.appendChild(imageIcon);
+            addPicture.appendChild(imageInput);
+            addPicture.appendChild(addPictureLabel);
+            addPicture.appendChild(maxSizeText);
+        
+            // Supprimer la classe 'completed-form' du bouton de validation
+            validateButton.classList.remove('completed-form');
+        }
+        
 
-
-    // fin du Listener
+    // fin du addEventListener de la modale
     });
 
 

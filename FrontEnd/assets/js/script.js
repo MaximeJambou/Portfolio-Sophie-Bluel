@@ -2,6 +2,22 @@
 let works = [];
 let categories = [];
 
+(async () => {
+    try {
+        const response = await fetch('http://localhost:5678/api/works');
+        works = await response.json();
+
+        generateWorks(works);
+        generateCategories(works);
+
+        console.log('importation réussie');
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération des travaux:', error);
+    }
+})();
+
+
 // Fonction pour générer les travaux
 function generateWorks(works) {
     // Récupération de l'élément du DOM qui accueillera la gallerie
@@ -34,6 +50,7 @@ function generateCategories(works) {
 
     // Réinitialiser les catégories
     sectionCategories.innerHTML = "";
+    categories = [];
 
     const allButton = document.createElement("div");
     allButton.classList.add("category", "button-actived");
@@ -61,24 +78,9 @@ function generateCategories(works) {
                 categoryButton.classList.add("button-actived");
             });
 
-            sectionCategories.appendChild(categoryButton);
             categories.push(category);
+            sectionCategories.appendChild(categoryButton);
         }
     }
 }
 
-// Récupération des travaux depuis l'API
-(async () => {
-    try {
-        const response = await fetch('http://localhost:5678/api/works');
-        works = await response.json();
-
-        generateWorks(works);
-        generateCategories(works);
-
-        console.log('importation réussie');
-
-    } catch (error) {
-        console.error('Erreur lors de la récupération des travaux:', error);
-    }
-})();
