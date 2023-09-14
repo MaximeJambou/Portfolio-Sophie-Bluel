@@ -198,7 +198,8 @@ if (userId && token) {
         const imageInput = document.createElement('input');
         imageInput.setAttribute('type', 'file');
         imageInput.setAttribute('id', 'upload-photo');
-        imageInput.setAttribute('accept', 'image/*');
+        imageInput.setAttribute('accept', 'image/jpeg, image/png');
+        imageInput.setAttribute('required', 'true');
         imageInput.style.display = 'none';
 
         const addPictureLabel = document.createElement('label');
@@ -217,6 +218,9 @@ if (userId && token) {
         titleInput.setAttribute('type', 'text');
         titleInput.setAttribute('id', 'title');
         titleInput.setAttribute('name', 'title');
+        titleInput.setAttribute('required', 'true');
+        titleInput.setAttribute('minlength', '3');
+        titleInput.setAttribute('maxlength', '50');
 
         const categoryLabel = document.createElement('label');
         categoryLabel.setAttribute('for', 'category');
@@ -243,6 +247,11 @@ if (userId && token) {
         validateButton.setAttribute('type', 'submit');
         validateButton.textContent = 'Valider';
 
+        // Message d'erreur
+        const errorMessage = document.createElement('p');
+        errorMessage.classList.add('errorMessage');
+
+
         // Ajout des éléments au DOM
         addPicture.appendChild(imageIcon);
         addPicture.appendChild(imageInput);
@@ -256,6 +265,7 @@ if (userId && token) {
         modalForm.appendChild(categorySelect);
         modalForm.appendChild(modalBorder2);
         modalForm.appendChild(validateButton);
+        modalForm.appendChild(errorMessage);
 
         modalContainer2.appendChild(modalTitle2);
         modalContainer2.appendChild(modalForm);
@@ -275,8 +285,10 @@ if (userId && token) {
         showFirstPage();
 
 
+        
 
         // Gestion des évènements
+
 
         // Passage d'une page de modale à l'autre
 
@@ -410,7 +422,17 @@ if (userId && token) {
             imageInput.addEventListener('change', function(event) {
             event.stopPropagation();
             const file = event.target.files[0];
-            
+                
+                // Vérification de la taille du fichier
+                if (file && file.size > 4 * 1024 * 1024) {
+                    errorMessage.textContent = "L'image est trop grande. Veuillez choisir une image de moins de 4 Mo.";
+                    imageInput.value = '';
+                    return; 
+                } else {
+                    errorMessage.textContent = ''; 
+                }
+
+
                 // Vérifier si un fichier a été sélectionné
                 if (file) {
                     // Créer un objet FileReader pour lire le contenu de la photo
@@ -494,8 +516,10 @@ if (userId && token) {
                     
                     } else if (response.status === 401) {
                     console.error('Non autorisé à ajouter le projet.');
+                    errorMessage.textContent = "Non autorisé à ajouter le projet.";
                     } else {
                     console.error('Une erreur s\'est produite lors de l\'ajout du projet.');
+                    errorMessage.textContent = "Une erreur s'est produite lors de l'ajout du projet.";
                     }
                 })
 
@@ -514,9 +538,11 @@ if (userId && token) {
 
                 .catch(error => {
                     console.error('Une erreur s\'est produite lors de la communication avec l\'API.', error);
+                    errorMessage.textContent = "Une erreur s'est produite lors de la communication avec l'API.";
                 });
                 } else {
                 console.error('Veuillez remplir tous les champs avant de valider.');
+                errorMessage.textContent = "Veuillez remplir tous les champs avant de valider.";
                 }
         });
 
