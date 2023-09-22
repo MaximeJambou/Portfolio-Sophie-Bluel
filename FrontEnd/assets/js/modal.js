@@ -1,4 +1,4 @@
-// localStorage
+// LocalStorage
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 
@@ -136,9 +136,7 @@ if (userId && token) {
                 imageWork.src = work.imageUrl;
                 imageWork.alt = work.title;
         
-                // Création du figcaption avec le texte "éditer"
-                const figcaption = document.createElement('figcaption');
-                figcaption.innerText = 'éditer';
+                
         
                 // Ajout de l'icône de suppression
                 const iconDelete = document.createElement('span');
@@ -149,7 +147,6 @@ if (userId && token) {
         
                 // Ajout des éléments au DOM
                 figureWork.appendChild(imageWork);
-                figureWork.appendChild(figcaption);
                 figureWork.appendChild(iconDelete);
                 modalGallery.appendChild(figureWork);
             }
@@ -233,7 +230,6 @@ if (userId && token) {
         // Création des options du select
         for (let i = 0; i < categories.length; i++) {
             const categoryOption = document.createElement('option');
-            console.log(categories[i]);
             categoryOption.value = categories[i].id;
             categoryOption.textContent = categories[i].name;
             categorySelect.appendChild(categoryOption);
@@ -400,8 +396,6 @@ if (userId && token) {
             works = await response.json();
             
             generateWorks(works);
-            console.log(works);
-            console.log(categories);
             generateCategories(works);
             }else{
             localStorage.removeItem('userId');
@@ -492,7 +486,7 @@ if (userId && token) {
             
             // Vérifier si tous les champs sont remplis
             if (title && category && image) {
-                console.log('formulaire rempli');
+                
                 // Créer un objet FormData pour envoyer les données
                 const formData = new FormData();
                 formData.append('title', title);
@@ -509,17 +503,16 @@ if (userId && token) {
                 })
                 .then(response => {
                     if (response.status === 201) {
-                    console.log('Le projet a été ajouté avec succès.');
                     
-                    // Après avoir ajouté le projet, refaites un appel à l'API pour obtenir la liste mise à jour des projets
-                    return fetch('http://localhost:5678/api/works');
+                        // Après avoir ajouté le projet, refaites un appel à l'API pour obtenir la liste mise à jour des projets
+                        return fetch('http://localhost:5678/api/works');
                     
                     } else if (response.status === 401) {
-                    console.error('Non autorisé à ajouter le projet.');
-                    errorMessage.textContent = "Non autorisé à ajouter le projet.";
+                        console.error('Non autorisé à ajouter le projet.');
+                        errorMessage.textContent = "Non autorisé à ajouter le projet.";
                     } else {
-                    console.error('Une erreur s\'est produite lors de l\'ajout du projet.');
-                    errorMessage.textContent = "Une erreur s'est produite lors de l'ajout du projet.";
+                        console.error('Une erreur s\'est produite lors de l\'ajout du projet.');
+                        errorMessage.textContent = "Une erreur s'est produite lors de l'ajout du projet.";
                     }
                 })
 

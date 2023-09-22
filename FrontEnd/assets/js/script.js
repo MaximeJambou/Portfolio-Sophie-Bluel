@@ -9,9 +9,7 @@ let categories = [];
 
         generateWorks(works);
         generateCategories(works);
-
-        console.log('importation réussie');
-
+        
     } catch (error) {
         console.error('Erreur lors de la récupération des travaux:', error);
     }
@@ -43,6 +41,7 @@ function generateWorks(works) {
         sectionGallery.appendChild(figureWork);
     }
 }
+
 
 // Fonction pour générer les catégories
 function generateCategories(works) {
@@ -83,4 +82,6 @@ function generateCategories(works) {
         }
     }
 }
+
+
 
