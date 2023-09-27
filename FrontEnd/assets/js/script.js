@@ -70,6 +70,7 @@ function generateCategories(works) {
             const categoryButton = document.createElement("div");
             categoryButton.classList.add("category");
             categoryButton.innerText = category.name;
+            
             categoryButton.addEventListener("click", () => {
                 const filteredWorks = works.filter((work) => work.category.name === category.name);
                 generateWorks(filteredWorks);

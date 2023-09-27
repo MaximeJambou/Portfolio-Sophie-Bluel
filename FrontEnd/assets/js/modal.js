@@ -387,21 +387,22 @@ if (userId && token) {
 
 
             if (deletedWork){
-             // Supprimer le projet de la galerie dans la modale
-            const workElement = this.parentElement;
-            workElement.remove();
+                // Supprimer le projet de la galerie dans la modale
+                const workElement = this.parentElement;
+                workElement.remove();
 
-            // Après avoir supprimé le projet, faire un appel à l'API pour obtenir la liste mise à jour des projets
-            const response = await fetch('http://localhost:5678/api/works');
-            works = await response.json();
-            
-            generateWorks(works);
-            generateCategories(works);
+                // Après avoir supprimé le projet, faire un appel à l'API pour obtenir la liste mise à jour des projets
+                const response = await fetch('http://localhost:5678/api/works');
+                works = await response.json();
+                
+                generateWorks(works);
+                generateCategories(works);
+
             }else{
-            localStorage.removeItem('userId');
-            localStorage.removeItem('token');
-        
-            window.location.href ='login.html';
+                localStorage.removeItem('userId');
+                localStorage.removeItem('token');
+            
+                window.location.href ='login.html';
             }            
         }
 
